@@ -5,6 +5,7 @@ class ArtWorkPage:
     def __init__(self, url):
         self.url = url
 
+    # get the art work info from the website
     def get_info(self):
         try:
             data = requests.get(self.url).content
@@ -15,7 +16,7 @@ class ArtWorkPage:
 
         info = {
             'title': soup.body.find('div',{'class':'titLeft'}).h1.text,
-            'authors': map(lambda t: t.text.split()[0],soup.body.find('div',{'class':'worksInfo'},id='').table.td.find_all('a'))
+            'authors': map(lambda t: t.text.split()[0], soup.body.find('div',{'class':'worksInfo'},id='').table.td.find_all('a')),
             'size':
         }
 

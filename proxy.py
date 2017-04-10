@@ -22,7 +22,7 @@ class proxy_checker(threading.Thread):
 
     def proxy_check(self, p):
         try:
-            requests.get(url, proxies={"http": p}, timeout=2)
+            requests.get(url, proxies={"http": p}, timeout=5)
         except:
             # print 'error: ', p
             i = 1
@@ -37,7 +37,7 @@ for line in proxy_file:
 for p in proxy_list:
     TASK_QUEUE.put(p)
 thread_list = []
-for i in range(10):
+for i in range(1024):
     thread = proxy_checker()
     thread.start()
     thread_list.append(thread)
@@ -45,5 +45,7 @@ for i in range(10):
 for t in thread_list:
     t.join()
 
-for p in rList:
-    print p
+with open('verified_proxy_list.txt', 'w+') as vpl:
+    for p in rList:
+        print p
+        vpl.write(p+'\n')
