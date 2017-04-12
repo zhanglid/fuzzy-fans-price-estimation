@@ -8,7 +8,8 @@ from bs4 import BeautifulSoup
 urlList = []
 _WORK_THREAD_NUM = 1
 SHARE_PAGE_Q = Queue.Queue()
-SOLVED_PAGE_NUM = 0;
+SOLVED_PAGE_NUM = 0
+
 
 class PageThread(threading.Thread):
     def __init__(self, id, proxy):
@@ -33,8 +34,7 @@ class PageThread(threading.Thread):
             url = 'http://artso.artron.net/auction/search_auction.php?keyword=%E6%89%87%E9%9D%A2&page='
             time.sleep(1+random.random())
             #data = urllib2.urlopen(url + str(page_num)).read()
-            headers = {"Accept": "text/html,application/xhtml+xml,application/xml;",
-                       #"Accept-Encoding": "gzip",
+            headers = {"Accept": "text/html,application/xhtml+xml,application/xml;", #"Accept-Encoding": "gzip",
                        "Accept-Language": "zh-CN,zh;q=0.8",
                        #"Referer": "http://www.example.com/",
                        "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36"
@@ -55,8 +55,6 @@ class PageThread(threading.Thread):
                 continous_fail = continous_fail + 1
                 #print soup.get_text()[:100]
                 continue
-            mutex.acquire()
-            SOLVED_PAGE_NUM = SOLVED_PAGE_NUM + 1
             print 'id:', self.id, '|', 'num:', page_num, '|', 'success:', success, '| failed:', continous_fail, '| result:', len(result_list), ' | ', str(SHARE_PAGE_Q.qsize()), ' | ', SOLVED_PAGE_NUM
             mutex.release()
             success = success + 1
@@ -72,7 +70,7 @@ class PageThread(threading.Thread):
 
 
 threadList = []
-mutex = threading.Lock()
+mutex = threading.Lock(i)
 proxy_list = []
 pfile = open('verified_proxy_list.txt', 'r')
 for line in pfile:
@@ -88,3 +86,4 @@ for i in range(len(proxy_list)):
 
 for t in threadList:
     t.join()
+
