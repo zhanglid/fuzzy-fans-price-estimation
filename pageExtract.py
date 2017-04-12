@@ -25,9 +25,9 @@ def set_info(a):
     url = a['url']
     info = get_info_by_page(url)
     a_new['isGot'] = True
-    print aic.replace_one(a, a_new)
+    a_new.update(info)
+    print aic.replace_one({'_id': a['_id']}, a_new)
     print info
-    print aic.update_one(a, {"$set": info})
 
 # start client connection
 client = MongoClient('localhost', 27017)
