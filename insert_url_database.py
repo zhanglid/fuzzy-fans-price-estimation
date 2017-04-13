@@ -5,7 +5,7 @@ aic = db.art_work_collection
 
 url_file = open('log.txt', 'r')
 for line in url_file:
-    aic.insert_one({'url': line})
+    aic.insert_one({'url': line[:-2]})
 
 aic.create_index('work_id')
 client.close()
