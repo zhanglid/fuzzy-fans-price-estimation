@@ -1,4 +1,4 @@
-import pageExtract
+from extract_page_info_by_url import set_info 
 import threading
 import Queue
 import time
@@ -20,14 +20,13 @@ class MyWoker(threading.Thread):
         while not QUEUE_RECORD.empty():
             time.sleep(1 + random.random())
             a = QUEUE_RECORD.get()
-            if not pageExtract.set_info(aic, a, proxy=self.proxy):
+            if not set_info(aic, a, proxy=self.proxy):
                 self.failCount = self.failCount + 1
                 QUEUE_RECORD.put(a)
             else:
                 self.sucCount = self.sucCount + 1
                 mutex.acquire()
                 print a['_id'], '|suc: ', self.sucCount, ' |fail:', self.failCount, aic.find({'_id': a['_id']})[0]['title']
-                print
                 mutex.release()
                 QUEUE_RECORD.task_done()
             if self.failCount > 10 and self.sucCount == 0:
@@ -37,7 +36,9 @@ class MyWoker(threading.Thread):
 def show_left_num(aic):
     while True:
         time.sleep(1)
+	mutex.acquire()
         print aic.count({'isGot': False})
+	mutex.release()
 
 if __name__ == '__main__':
     # start client connection
