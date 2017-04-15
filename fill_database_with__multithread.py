@@ -36,9 +36,9 @@ class MyWoker(threading.Thread):
 def show_left_num(aic):
     while True:
         time.sleep(1)
-	mutex.acquire()
+        mutex.acquire()
         print aic.count({'isGot': False})
-	mutex.release()
+        mutex.release()
 
 if __name__ == '__main__':
     # start client connection
